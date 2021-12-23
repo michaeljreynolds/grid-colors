@@ -35,11 +35,16 @@
   border: 2px solid red;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
 .grid {    
   background-color: white;  
+}
 
+.options {
+  height: 200px;
+  border: 1px solid black;
 }
 
 @keyframes App-logo-spin {

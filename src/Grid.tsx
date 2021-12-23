@@ -2,18 +2,12 @@ import { emitWarning } from 'process';
 import React, { useEffect, useState } from 'react';
 import './Grid.css';
 
-function Grid() {    
-    let height = 50;
-    let width = 50;
-    let tempGrid = [];
-    let id = 0;
+function Grid(props) {    
 
-    let colors = [
-        'blue',
-        'red',
-        'green',
-        'yellow'
-    ];
+    const { shape, cellSize, colors } = props;
+    
+    let tempGrid = [];
+    let id = 0;    
     
     for (let i = 0; i < 500; i += 50) {
         let temp = [];
@@ -42,31 +36,70 @@ function Grid() {
     const handleClick = (e) => {
         let row = parseInt(e.currentTarget.getAttribute('data-row'), 10);        
         let column = parseInt(e.currentTarget.getAttribute('data-column'), 10);
-          
+        let newGrid = getPropagatedShapeGrid(row, column, shape);
+        setGrid([...newGrid]);
+    }
+
+    const getPropagatedShapeGrid = (row, column, shape) => {
         let temp = grid;
+        let colorArray = [];
 
-        let left = temp[row - 1][column];
-        let right = temp[row + 1][column];
-        let top = temp[row][column - 1];
-        let bottom = temp[row][column + 1];
+        if (shape === "cross") {
 
-        let colorArray = [
-            left,
-            right,
-            top,
-            bottom
-        ];
+            let top = temp[row - 1][column];
+            let bottom = temp[row + 1][column];
+            let left = temp[row][column - 1];
+            let right = temp[row][column + 1];
+    
+            colorArray.push(left);
+            colorArray.push(right);
+            colorArray.push(top);
+            colorArray.push(bottom);
+            
+        } else if (shape === "square") {
+            let top = temp[row - 1][column];
+            let bottom = temp[row + 1][column];
+            let left = temp[row][column - 1];
+            let right = temp[row][column + 1];
+
+            let diagonalLeftTop = temp[row - 1][column - 1];
+            let diagonalRightTop = temp[row - 1][column + 1];
+            let diagonalLeftBottom = temp[row + 1][column - 1];
+            let diagonalRightBottom= temp[row + 1][column + 1];
+
+            colorArray.push(left);
+            colorArray.push(right);
+            colorArray.push(top);
+            colorArray.push(bottom);
+
+            colorArray.push(diagonalLeftBottom);
+            colorArray.push(diagonalRightBottom);
+            colorArray.push(diagonalLeftTop);
+            colorArray.push(diagonalRightTop);
+        } else if (shape === "triangle") {
+            let top = temp[row - 1][column];            
+            let diagonalLeftBottom = temp[row + 1][column - 1];
+            let diagonalRightBottom= temp[row + 1][column + 1];
+            
+            colorArray.push(top); 
+            colorArray.push(diagonalLeftBottom);           
+            colorArray.push(diagonalRightBottom);            
+        }
+
+
 
         // update squares based off of their previous color
         for (let i = 0; i < colorArray.length; i++) {
             colorArray[i].color = colors.indexOf(colorArray[i].color) + 1 >= colors.length ? colors[0] : colors[colors.indexOf(colorArray[i].color) + 1];
         }
-        setGrid([...temp]);
-    }
+
+        return temp;
+    };
 
 
     return (
         <div className="outer">
+            our shape is {shape}
             {grid.map((row, index) => {
                 return (
                     <div key={index} className="row">
