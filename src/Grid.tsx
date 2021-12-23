@@ -2,30 +2,30 @@ import { emitWarning } from 'process';
 import React, { useEffect, useState } from 'react';
 import './Grid.css';
 
-function Grid() {
-    let random = 'yellow';
+function Grid() {    
     let height = 50;
     let width = 50;
     let tempGrid = [];
     let id = 0;
 
-    let colors = {
-        1: 'yellow',
-        2: 'green',
-        3: 'blue',
-        4: 'red'
-    };
-
+    let colors = [
+        'blue',
+        'red',
+        'green',
+        'yellow'
+    ];
+    
     for (let i = 0; i < 500; i += 50) {
         let temp = [];
         for (let j = 0; j < 500; j+= 50) {
             temp.push({
                 id,
+                //color: colors[Math.floor(Math.random() * 4)],
                 color: 'yellow',
                 width: 50,
                 height: 50
             })
-            id++;
+            id++;            
         }
         tempGrid.push(temp);
     }
@@ -42,13 +42,25 @@ function Grid() {
     const handleClick = (e) => {
         let row = parseInt(e.currentTarget.getAttribute('data-row'), 10);        
         let column = parseInt(e.currentTarget.getAttribute('data-column'), 10);
-        // highlight the cell next to this
-        grid[row][column -1].color = 'blue';
+          
         let temp = grid;
-        temp[row][column + 1].color = 'blue';
-        temp[row][column - 1].color = 'blue';        
-        temp[row + 1][column].color = 'blue';
-        temp[row - 1][column].color = 'blue';
+
+        let left = temp[row - 1][column];
+        let right = temp[row + 1][column];
+        let top = temp[row][column - 1];
+        let bottom = temp[row][column + 1];
+
+        let colorArray = [
+            left,
+            right,
+            top,
+            bottom
+        ];
+
+        // update squares based off of their previous color
+        for (let i = 0; i < colorArray.length; i++) {
+            colorArray[i].color = colors.indexOf(colorArray[i].color) + 1 >= colors.length ? colors[0] : colors[colors.indexOf(colorArray[i].color) + 1];
+        }
         setGrid([...temp]);
     }
 
