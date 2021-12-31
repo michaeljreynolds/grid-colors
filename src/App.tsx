@@ -7,9 +7,14 @@ import Options from './Options';
 function App() {
 
   const [shape, setShape] = useState("cross");
+  const [wave, setWave] = useState(false);
 
   const shapeCallback = (currentShape) => {
     setShape(currentShape);
+  }
+
+  const waveCallback = (wave) => {
+    setWave(wave);
   }
 
   const colors = [
@@ -21,14 +26,12 @@ function App() {
 
   return (
     <div className="container">
-      <div>
-        <div className="options" >
-          <Options shapeCallback={shapeCallback} />
+      <div className="options" >
+          <Options shapeCallback={shapeCallback} waveCallback={waveCallback} />
         </div>        
         <div className="grid">        
-          <Grid shape={shape} cellSize="50" colors={colors} />
+          <Grid shape={shape} wave={wave} cellSize="50" colors={colors} />
         </div>
-      </div>      
     </div>
   );
 }

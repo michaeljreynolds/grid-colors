@@ -4,9 +4,10 @@ import './Options.css';
 
 function Options(props) {
 
-    const { shapeCallback } = props;
+    const { shapeCallback, waveCallback } = props;
 
     const [shape, setShape] = useState("cross");
+    const [wave, setWave] = useState(false);
 
     const handleChange = (e) => {
         const { id } = e.target;        
@@ -14,20 +15,30 @@ function Options(props) {
         shapeCallback(id);
     }
 
+    const handleWaveChange = (e) => {
+        const { checked } = e.target;
+        setWave(checked);
+        waveCallback(checked);
+    }
+
     let shapes = ["cross", "square", "triangle"];
 
     return (
-        <div>
-            Shapes:
-            {shapes.map((currentShape, index) => {                
-                return (
-                    <div key={currentShape}>
-                        <input type="radio" id={currentShape} name="shape" checked={currentShape === shape} onChange={handleChange}/>
-                        <label htmlFor={currentShape}>{currentShape}</label>
-                    </div>
-                );
-            })}
-            
+        <div className="flex">
+            <div>
+                Shapes:
+                {shapes.map((currentShape, index) => {                
+                    return (
+                        <div key={currentShape}>
+                            <input type="radio" id={currentShape} name="shape" checked={currentShape === shape} onChange={handleChange}/>
+                            <label htmlFor={currentShape}>{currentShape}</label>
+                        </div>
+                    );
+                })}    
+            </div>                    
+            <div>
+                Wave: <input type="checkbox" name="wave" id="wave" onChange={handleWaveChange} />
+            </div>
         </div>
     );
 }

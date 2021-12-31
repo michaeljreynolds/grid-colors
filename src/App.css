@@ -35,7 +35,7 @@
   border: 2px solid red;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+
 }
 
 .grid {    
@@ -45,6 +45,14 @@
 .options {
   height: 200px;
   border: 1px solid black;
+}
+
+.flex {
+  display: flex;  
+}
+
+.flex > div {
+  flex: 1 1 0;
 }
 
 @keyframes App-logo-spin {

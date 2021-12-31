@@ -1,30 +1,31 @@
 import { emitWarning } from 'process';
 import React, { useEffect, useState } from 'react';
+import { getNextShapeForGrid, resetGridColors } from './services/ShapeService';
 import './Grid.css';
 
 function Grid(props) {    
 
-    const { shape, cellSize, colors } = props;
-    
-    let tempGrid = [];
-    let id = 0;    
-    
-    for (let i = 0; i < 500; i += 50) {
-        let temp = [];
-        for (let j = 0; j < 500; j+= 50) {
-            temp.push({
-                id,
-                //color: colors[Math.floor(Math.random() * 4)],
-                color: 'yellow',
-                width: 50,
-                height: 50
-            })
-            id++;            
+    const { shape, wave, cellSize, colors } = props;    
+        
+    const [grid, setGrid] = useState(() => {
+        let tempGrid = [];
+        let id = 0;
+        for (let i = 0; i < 500 * 4; i += 25) {
+            let temp = [];
+            for (let j = 0; j < 500 * 4; j+= 25) {
+                temp.push({
+                    id,
+                    //color: colors[Math.floor(Math.random() * 4)],
+                    color: 'yellow',
+                    width: 25,
+                    height: 25
+                })
+                id++;            
+            }
+            tempGrid.push(temp);
         }
-        tempGrid.push(temp);
-    }
-
-    const [grid, setGrid] = useState(tempGrid);          
+        return tempGrid;
+    });  
 
     const handleMouseOver = (e) => {        
         e.target.className = "blue-hover";
@@ -36,70 +37,30 @@ function Grid(props) {
     const handleClick = (e) => {
         let row = parseInt(e.currentTarget.getAttribute('data-row'), 10);        
         let column = parseInt(e.currentTarget.getAttribute('data-column'), 10);
-        let newGrid = getPropagatedShapeGrid(row, column, shape);
-        setGrid([...newGrid]);
-    }
-
-    const getPropagatedShapeGrid = (row, column, shape) => {
-        let temp = grid;
-        let colorArray = [];
-
-        if (shape === "cross") {
-
-            let top = temp[row - 1][column];
-            let bottom = temp[row + 1][column];
-            let left = temp[row][column - 1];
-            let right = temp[row][column + 1];
-    
-            colorArray.push(left);
-            colorArray.push(right);
-            colorArray.push(top);
-            colorArray.push(bottom);
-            
-        } else if (shape === "square") {
-            let top = temp[row - 1][column];
-            let bottom = temp[row + 1][column];
-            let left = temp[row][column - 1];
-            let right = temp[row][column + 1];
-
-            let diagonalLeftTop = temp[row - 1][column - 1];
-            let diagonalRightTop = temp[row - 1][column + 1];
-            let diagonalLeftBottom = temp[row + 1][column - 1];
-            let diagonalRightBottom= temp[row + 1][column + 1];
-
-            colorArray.push(left);
-            colorArray.push(right);
-            colorArray.push(top);
-            colorArray.push(bottom);
-
-            colorArray.push(diagonalLeftBottom);
-            colorArray.push(diagonalRightBottom);
-            colorArray.push(diagonalLeftTop);
-            colorArray.push(diagonalRightTop);
-        } else if (shape === "triangle") {
-            let top = temp[row - 1][column];            
-            let diagonalLeftBottom = temp[row + 1][column - 1];
-            let diagonalRightBottom= temp[row + 1][column + 1];
-            
-            colorArray.push(top); 
-            colorArray.push(diagonalLeftBottom);           
-            colorArray.push(diagonalRightBottom);            
+        if (wave) {
+            let stepNumber = 0;
+            let stepGrid = getNextShapeForGrid(grid, shape, colors, row, column, stepNumber);            
+            setGrid([...stepGrid]);            
+            const interval = setInterval(() => {
+                //setGrid(resetGridColors(grid));
+                stepGrid = getNextShapeForGrid(grid, shape, colors, row, column, stepNumber);
+                setGrid([...stepGrid]);
+                if (stepNumber === 20) {
+                    window.clearInterval(interval);
+                }
+                stepNumber++;
+            }, 500);               
+        } else {
+            const stepNumber = 0;
+            let newGrid = getNextShapeForGrid(grid, shape, colors, row, column, stepNumber);
+            setGrid([...newGrid]);
         }
-
-
-
-        // update squares based off of their previous color
-        for (let i = 0; i < colorArray.length; i++) {
-            colorArray[i].color = colors.indexOf(colorArray[i].color) + 1 >= colors.length ? colors[0] : colors[colors.indexOf(colorArray[i].color) + 1];
-        }
-
-        return temp;
-    };
-
+        
+    }    
 
     return (
         <div className="outer">
-            our shape is {shape}
+            our shape is {shape} and our wave is {wave.toString()}
             {grid.map((row, index) => {
                 return (
                     <div key={index} className="row">
@@ -112,9 +73,8 @@ function Grid(props) {
                                 display: 'inline-block'                                                            
                             }
                             return (
-                                <div data-row={index} data-column={columnIndex} key={cell.id} onClick={handleClick} onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave} style={style}>cell</div>
-                            );
-                            
+                                <div data-row={index} data-column={columnIndex} key={cell.id} onClick={handleClick} onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave} style={style}>&nbsp;</div>
+                            );                            
                         })}
                     </div>
                 );                
