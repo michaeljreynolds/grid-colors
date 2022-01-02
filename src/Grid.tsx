@@ -5,7 +5,7 @@ import './Grid.css';
 
 function Grid(props) {    
 
-    const { shape, wave, cellSize, colors } = props;    
+    const { shape, steps, wave, cellSize, colors } = props;        
 
     const [grid, setGrid] = useState(() => {
         let tempGrid = [];
@@ -27,7 +27,7 @@ function Grid(props) {
         return tempGrid;
     });  
 
-    const [resetting, setResetting] = useState(false);
+    const [intervals, setIntervals] = useState([]);
     
 
     const handleMouseOver = (e) => {        
@@ -37,28 +37,35 @@ function Grid(props) {
         e.target.className = "";
     }
 
-    const handleResetClick = () => {
-        let tempGrid = resetGridColors(grid);
-        setResetting(true);
+    const handleResetClick = () => {        
+        let tempGrid = resetGridColors(grid);        
         setGrid([...tempGrid]);
+        intervals.forEach((interval) => {
+            window.clearInterval(interval);
+        });
+        setIntervals([]);
     }
 
     const handleClick = (e) => {
         let row = parseInt(e.currentTarget.getAttribute('data-row'), 10);        
         let column = parseInt(e.currentTarget.getAttribute('data-column'), 10);
-        setResetting(false);
-        if (wave) {
-            let stepNumber = 0;
-            let stepGrid = getNextShapeForGrid(grid, shape, colors, row, column, stepNumber);            
-            setGrid([...stepGrid]);            
+        let stepGrid, stepNumber = 0;
+        if (wave) {            
+            // this part is surprisingly important
+            // when we first click, we immediately set the colors of surrounding cells to mimick movement and fluidity
+            // we do not increment our stepnumber before starting our loop
+            // this creates a cool effect
+            stepGrid = getNextShapeForGrid(grid, shape, colors, row, column, stepNumber);            
+            setGrid([...stepGrid]);                                    
             const interval = setInterval(() => {
-                if (stepNumber === 20 || resetting) {
-                    window.clearInterval(interval);
+                if (stepNumber === steps) {
+                    window.clearInterval(interval);                    
                 }                
                 stepGrid = getNextShapeForGrid(grid, shape, colors, row, column, stepNumber);
-                setGrid([...stepGrid]);                
+                setGrid([...stepGrid]);                                
                 stepNumber++;
-            }, 500);               
+            }, 500);            
+            setIntervals(prevIntervals => [...prevIntervals, interval]);
         } else {
             const stepNumber = 0;
             let newGrid = getNextShapeForGrid(grid, shape, colors, row, column, stepNumber);

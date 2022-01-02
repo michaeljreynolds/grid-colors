@@ -1,14 +1,15 @@
 import { emitWarning } from 'process';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Options.css';
 
 function Options(props) {
 
-    const { shapeCallback, waveCallback, themeCallback } = props;
+    const { shapeCallback, stepsCallback, themeCallback, waveCallback } = props;
 
     const [shape, setShape] = useState("cross");
     const [wave, setWave] = useState(true);
-    const [theme, setTheme] = useState("defaultTheme");
+    const [theme, setTheme] = useState("rainbow");
+    const [steps, setSteps] = useState(20);
 
     const handleChange = (e) => {
         const { id } = e.target;        
@@ -16,17 +17,17 @@ function Options(props) {
         shapeCallback(id);
     }
 
-    const handleWaveChange = (e) => {
-        const { checked } = e.target;
-        setWave(checked);
-        waveCallback(checked);
-    }
-    
-    const handleThemeChange = (e) => {
-        const theme = e.target.value;
-        setTheme(theme);
-        themeCallback(theme);
-    }
+    useEffect(() => {
+        themeCallback(theme);        
+    }, [theme]);
+
+    useEffect(() => {
+        stepsCallback(steps);
+    }, [steps]);
+
+    useEffect(() => {
+        waveCallback(wave);
+    }, [wave]);
 
     let shapes = ["cross", "square", "triangle"];
 
@@ -44,11 +45,16 @@ function Options(props) {
                 })}    
             </div>                    
             <div>
-                Wave: <input type="checkbox" name="wave" id="wave" checked={wave} onChange={handleWaveChange} />
+                <div>
+                    Wave: <input type="checkbox" name="wave" id="wave" checked={wave} onChange={(e) => {setWave(e.target.checked)}} />
+                </div>
+                <div>
+                    Steps: <input type="number" min="2" max="30" name="steps" value={steps} onChange={(e) => { setSteps(parseInt(e.target.value, 10)) }} />
+                </div>                
             </div>
             <div>
                 Themes:
-                <select id="themes" onChange={handleThemeChange} >
+                <select id="themes" value={theme} onChange={(e) => { setTheme(e.target.value)}} >
                     <option value="defaultTheme">default</option>
                     <option value="rainbow">rainbow</option>
                     <option value="dark">dark</option>                    

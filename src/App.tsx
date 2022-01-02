@@ -9,7 +9,8 @@ function App() {
 
   const [shape, setShape] = useState("cross");
   const [wave, setWave] = useState(true);
-  const [colors, setColors] = useState(getColors("defaultTheme"));
+  const [colors, setColors] = useState([]);
+  const [steps, setSteps] = useState(0);
 
   const shapeCallback = (currentShape) => {
     setShape(currentShape);
@@ -23,13 +24,17 @@ function App() {
     setColors(getColors(theme));
   };
 
+  const stepsCallback = (steps) => {
+    setSteps(steps);
+  }
+
   return (
     <div className="container">
       <div className="options" >
-          <Options shapeCallback={shapeCallback} waveCallback={waveCallback} themeCallback={themeCallback}  />
+          <Options shapeCallback={shapeCallback} stepsCallback={stepsCallback} themeCallback={themeCallback} waveCallback={waveCallback}  />
         </div>        
         <div className="grid">        
-          <Grid shape={shape} wave={wave} cellSize="50" colors={colors} />
+          <Grid shape={shape} wave={wave} cellSize="50" colors={colors} steps={steps} />
         </div>
     </div>
   );
