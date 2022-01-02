@@ -1,40 +1,71 @@
+import { COLORS } from './ColorService';
+
 export function getNextShapeForGrid(grid, shape, colors, row, column, stepNumber) {
     let temp = grid;
     let colorArray = [];
 
-    let top = temp[row - 1 - stepNumber][column];
-    let bottom = temp[row + 1 + stepNumber][column];
-    let left = temp[row][column - 1 - stepNumber];
-    let right = temp[row][column + 1 + stepNumber];
-    
-    let diagonalLeftTop = temp[row - 1 - stepNumber][column - 1 - stepNumber];
-    let diagonalRightTop = temp[row - 1 - stepNumber][column + 1 + stepNumber];
-    let diagonalLeftBottom = temp[row + 1 + stepNumber][column - 1 - stepNumber];
-    let diagonalRightBottom= temp[row + 1 + stepNumber][column + 1 + stepNumber];
+    let top, bottom, left, right;
+    let diagonalLeftTop, diagonalRightTop, diagonalLeftBottom, diagonalRightBottom;
 
-    if (shape === "cross") {
-        colorArray.push(left);
-        colorArray.push(right);
-        colorArray.push(top);
-        colorArray.push(bottom);        
-    } else if (shape === "square") {
-        colorArray.push(left);
-        colorArray.push(right);
-        colorArray.push(top);
-        colorArray.push(bottom);
-        colorArray.push(diagonalLeftBottom);
-        colorArray.push(diagonalRightBottom);
-        colorArray.push(diagonalLeftTop);
-        colorArray.push(diagonalRightTop);
-    } else if (shape === "triangle") {
-        colorArray.push(top); 
-        colorArray.push(diagonalLeftBottom);           
-        colorArray.push(diagonalRightBottom);            
+    if (column - 1 - stepNumber >= 0) {
+        left = temp[row][column - 1 - stepNumber];
     }
-    // update squares based off of their previous color
-    for (let i = 0; i < colorArray.length; i++) {
-        colorArray[i].color = colors.indexOf(colorArray[i].color) + 1 >= colors.length ? colors[0] : colors[colors.indexOf(colorArray[i].color) + 1];
+
+    if (column + 1 + stepNumber < grid[row].length) {
+        right = temp[row][column + 1 + stepNumber];
     }
+
+    if (row - 1 - stepNumber >= 0) {
+        top = temp[row - 1 - stepNumber][column];
+    }
+
+    if (row + 1 + stepNumber < grid.length) {
+        bottom = temp[row + 1 + stepNumber][column];
+    }    
+
+    if (row - 1 - stepNumber >= 0 && column - 1 - stepNumber >= 0) {
+        diagonalLeftTop = temp[row - 1 - stepNumber][column - 1 - stepNumber];
+    }
+
+    if (row - 1 - stepNumber >= 0 && column + 1 + stepNumber < grid[row].length) {
+        diagonalRightTop = temp[row - 1 - stepNumber][column + 1 + stepNumber];
+    }
+
+    if (row + 1 + stepNumber < grid.length && column - 1 - stepNumber >= 0) {
+        diagonalLeftBottom = temp[row + 1 + stepNumber][column - 1 - stepNumber];
+    }
+
+    if (row + 1 + stepNumber < grid.length && column + 1 + stepNumber < grid[row].length) {
+        diagonalRightBottom= temp[row + 1 + stepNumber][column + 1 + stepNumber];
+    }
+
+    let directions = [];
+    switch (shape) {
+        case "cross":
+            directions = [left, right, top, bottom];
+            break;
+        case "square":
+            directions = [left, right, top, bottom, diagonalLeftBottom, diagonalLeftTop, diagonalRightBottom, diagonalRightTop];            
+            break;
+        case "triangle":
+            directions = [top, diagonalLeftBottom, diagonalRightBottom];         
+            break;
+        default:
+            directions = [left, right, top, bottom];
+            break;
+    
+    }
+
+    directions.forEach((dir) => {
+        if (dir) {
+            colorArray.push(dir);
+        }
+    });
+
+    colorArray.forEach((cell) => {
+        cell.color = colors.indexOf(cell.color) + 1 >= colors.length ? colors[0] : colors[colors.indexOf(cell.color) + 1];
+    });    
+
     return temp;
 }
 
@@ -43,7 +74,7 @@ export function resetGridColors(grid) {
 
     newGrid.forEach((row, r) => {
         row.forEach((col, c) => {
-            newGrid[r][c].color = 'yellow';
+            newGrid[r][c].color = COLORS.default;
         });
     });
     

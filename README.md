@@ -17,3 +17,4 @@ https://www.blog.duomly.com/node-js-project-ideas-for-beginners/#1-books-directo
 colors todo
 1) add a colors options that allows a user to specify as many colors as they want for grid to cycle through
 2) add a randomizer option that generates a starting grid option of random colors and a color cycling option of random colors
+3) add a theme of colors (dracula, ide, etc) that you can select from 

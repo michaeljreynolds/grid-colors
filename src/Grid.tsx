@@ -6,11 +6,11 @@ import './Grid.css';
 function Grid(props) {    
 
     const { shape, wave, cellSize, colors } = props;    
-        
+
     const [grid, setGrid] = useState(() => {
         let tempGrid = [];
         let id = 0;
-        for (let i = 0; i < 500 * 4; i += 25) {
+        for (let i = 0; i < 500 * 2; i += 25) {
             let temp = [];
             for (let j = 0; j < 500 * 4; j+= 25) {
                 temp.push({
@@ -27,6 +27,9 @@ function Grid(props) {
         return tempGrid;
     });  
 
+    const [resetting, setResetting] = useState(false);
+    
+
     const handleMouseOver = (e) => {        
         e.target.className = "blue-hover";
     };
@@ -34,20 +37,26 @@ function Grid(props) {
         e.target.className = "";
     }
 
+    const handleResetClick = () => {
+        let tempGrid = resetGridColors(grid);
+        setResetting(true);
+        setGrid([...tempGrid]);
+    }
+
     const handleClick = (e) => {
         let row = parseInt(e.currentTarget.getAttribute('data-row'), 10);        
         let column = parseInt(e.currentTarget.getAttribute('data-column'), 10);
+        setResetting(false);
         if (wave) {
             let stepNumber = 0;
             let stepGrid = getNextShapeForGrid(grid, shape, colors, row, column, stepNumber);            
             setGrid([...stepGrid]);            
             const interval = setInterval(() => {
-                //setGrid(resetGridColors(grid));
-                stepGrid = getNextShapeForGrid(grid, shape, colors, row, column, stepNumber);
-                setGrid([...stepGrid]);
-                if (stepNumber === 20) {
+                if (stepNumber === 20 || resetting) {
                     window.clearInterval(interval);
-                }
+                }                
+                stepGrid = getNextShapeForGrid(grid, shape, colors, row, column, stepNumber);
+                setGrid([...stepGrid]);                
                 stepNumber++;
             }, 500);               
         } else {
@@ -60,25 +69,29 @@ function Grid(props) {
 
     return (
         <div className="outer">
-            our shape is {shape} and our wave is {wave.toString()}
-            {grid.map((row, index) => {
-                return (
-                    <div key={index} className="row">
-                        {row.map((cell, columnIndex) => {
-                            let style = {
-                                width: cell.width,
-                                height: cell.height,
-                                background: cell.color,
-                                border: '1px solid black',
-                                display: 'inline-block'                                                            
-                            }
-                            return (
-                                <div data-row={index} data-column={columnIndex} key={cell.id} onClick={handleClick} onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave} style={style}>&nbsp;</div>
-                            );                            
-                        })}
-                    </div>
-                );                
-            })}
+            <div>
+                <button onClick={handleResetClick} id="reset">Reset Grid</button>
+            </div>
+            <div className="grid">
+                {grid.map((row, index) => {
+                    return (
+                        <div key={index} className="row">
+                            {row.map((cell, columnIndex) => {
+                                let style = {
+                                    width: cell.width,
+                                    height: cell.height,
+                                    background: cell.color,
+                                    border: '1px solid black',                                    
+                                    display: 'inline-block'
+                                }
+                                return (
+                                    <div className="cell" data-row={index} data-column={columnIndex} key={cell.id} onClick={handleClick} onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave} style={style}>&nbsp;</div>
+                                );                            
+                            })}
+                        </div>
+                    );                
+                })}
+            </div>            
         </div>
     );
 }

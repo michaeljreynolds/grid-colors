@@ -4,10 +4,11 @@ import './Options.css';
 
 function Options(props) {
 
-    const { shapeCallback, waveCallback } = props;
+    const { shapeCallback, waveCallback, themeCallback } = props;
 
     const [shape, setShape] = useState("cross");
-    const [wave, setWave] = useState(false);
+    const [wave, setWave] = useState(true);
+    const [theme, setTheme] = useState("defaultTheme");
 
     const handleChange = (e) => {
         const { id } = e.target;        
@@ -19,6 +20,12 @@ function Options(props) {
         const { checked } = e.target;
         setWave(checked);
         waveCallback(checked);
+    }
+    
+    const handleThemeChange = (e) => {
+        const theme = e.target.value;
+        setTheme(theme);
+        themeCallback(theme);
     }
 
     let shapes = ["cross", "square", "triangle"];
@@ -37,8 +44,16 @@ function Options(props) {
                 })}    
             </div>                    
             <div>
-                Wave: <input type="checkbox" name="wave" id="wave" onChange={handleWaveChange} />
+                Wave: <input type="checkbox" name="wave" id="wave" checked={wave} onChange={handleWaveChange} />
             </div>
+            <div>
+                Themes:
+                <select id="themes" onChange={handleThemeChange} >
+                    <option value="defaultTheme">default</option>
+                    <option value="rainbow">rainbow</option>
+                    <option value="dark">dark</option>                    
+                </select>    
+            </div>            
         </div>
     );
 }
