@@ -20,3 +20,8 @@ colors todo
 1) add a colors options that allows a user to specify as many colors as they want for grid to cycle through
 2) add a randomizer option that generates a starting grid option of random colors and a color cycling option of random colors
 3) <strike>add a theme of colors (dracula, ide, etc) that you can select from </strike>
+3a) add cool color palettes - look up, get from others, etc. I think 8 would be a good standard color cycle length
+
+!!!
+engineering cleanup
+1) move grid generation code to app so we can move resetgrid into options

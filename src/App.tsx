@@ -7,34 +7,66 @@ import { getColors } from './services/ColorService';
 
 function App() {
 
-  const [shape, setShape] = useState("cross");
+  const [rate, setRate] = useState(5);
+  const [shape, setShape] = useState("cross");  
+  const [steps, setSteps] = useState(10);
+  const [theme, setTheme] = useState("rainbow");  
   const [wave, setWave] = useState(true);
-  const [colors, setColors] = useState([]);
-  const [steps, setSteps] = useState(0);
 
-  const shapeCallback = (currentShape) => {
-    setShape(currentShape);
+  const handleRateChange = (rate) => {
+    setRate(rate);
+  };
+  
+  const handleResetGridClick = () => {
+    
   };
 
-  const waveCallback = (wave) => {
+  const handleShapeChange = (shape) => {
+    setShape(shape);
+  };
+  
+  const handleStepChange = (steps) => {
+    setSteps(steps);
+  };
+
+  const handleThemeChange = (theme) => {
+    setTheme(theme);
+  };  
+
+  const handleWaveChange = (wave) => {
     setWave(wave);
   };
 
-  const themeCallback = (theme) => {
-    setColors(getColors(theme));
+  const options = {    
+    handleRateChange,
+    handleResetGridClick,
+    handleShapeChange,
+    handleStepChange,
+    handleThemeChange,
+    handleWaveChange,
+    rate,
+    shape,
+    steps,    
+    theme,
+    wave    
   };
 
-  const stepsCallback = (steps) => {
-    setSteps(steps);
-  }
+  const gridOptions = {
+    cellSize: "50",
+    colors: getColors(theme),
+    rate,
+    shape,    
+    steps,
+    wave    
+  };
 
   return (
     <div className="container">
       <div className="options" >
-          <Options shapeCallback={shapeCallback} stepsCallback={stepsCallback} themeCallback={themeCallback} waveCallback={waveCallback}  />
+          <Options {...options} />
         </div>        
         <div className="grid">        
-          <Grid shape={shape} wave={wave} cellSize="50" colors={colors} steps={steps} />
+          <Grid {...gridOptions} />
         </div>
     </div>
   );

@@ -2,3 +2,22 @@
     border: 1px solid black;
 }
 
+.options {
+    height: 200px;    
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+}
+
+.options > .options-row {
+    flex: 1 1 0;
+    border: 1px solid black;    
+}
+
+.options > .options-row:first-child {
+    border-bottom: none;
+}
+
+.flex { 
+    display: flex;
+}

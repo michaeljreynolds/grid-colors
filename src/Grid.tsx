@@ -5,7 +5,14 @@ import './Grid.css';
 
 function Grid(props) {    
 
-    const { shape, steps, wave, cellSize, colors } = props;        
+    const {
+        cellSize, 
+        colors,
+        rate,
+        shape,
+        steps, 
+        wave,         
+    } = props;        
 
     const [grid, setGrid] = useState(() => {
         let tempGrid = [];
@@ -26,7 +33,7 @@ function Grid(props) {
         }
         return tempGrid;
     });  
-
+    
     const [intervals, setIntervals] = useState([]);
     
 
@@ -64,7 +71,7 @@ function Grid(props) {
                 stepGrid = getNextShapeForGrid(grid, shape, colors, row, column, stepNumber);
                 setGrid([...stepGrid]);                                
                 stepNumber++;
-            }, 500);            
+            }, 100 * rate);            
             setIntervals(prevIntervals => [...prevIntervals, interval]);
         } else {
             const stepNumber = 0;
