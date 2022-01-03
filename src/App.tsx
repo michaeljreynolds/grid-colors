@@ -16,9 +16,9 @@ function App() {
   const handleRateChange = (rate) => {
     setRate(rate);
   };
-  
+
   const handleResetGridClick = () => {
-    
+
   };
 
   const handleShapeChange = (shape) => {

@@ -23,7 +23,7 @@ function Grid(props) {
                 temp.push({
                     id,
                     //color: colors[Math.floor(Math.random() * 4)],
-                    color: 'yellow',
+                    colorIndex: 0,
                     width: 25,
                     height: 25
                 })
@@ -94,7 +94,7 @@ function Grid(props) {
                                 let style = {
                                     width: cell.width,
                                     height: cell.height,
-                                    background: cell.color,
+                                    background: cell.colorIndex < colors.length ? colors[cell.colorIndex] : colors[0],
                                     border: '1px solid black',                                    
                                     display: 'inline-block'
                                 }

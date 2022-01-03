@@ -1,6 +1,7 @@
 import { emitWarning } from 'process';
 import { useEffect, useState } from 'react';
 import './Options.css';
+import { themes } from './services/ThemeService';
 
 function Options(props) {
     
@@ -45,9 +46,11 @@ function Options(props) {
                 <div>
                     Themes:
                     <select id="themes" value={theme} onChange={(e) => {handleThemeChange(e.target.value)}} >
-                        <option value="defaultTheme">default</option>
-                        <option value="rainbow">rainbow</option>
-                        <option value="dark">dark</option>                    
+                        {Object.keys(themes).map((theme, index) => {
+                            return (
+                                <option value={theme.toString()}>{theme}</option>
+                            );
+                        })}
                     </select>    
                 </div>
             </div>

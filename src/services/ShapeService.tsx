@@ -62,8 +62,14 @@ export function getNextShapeForGrid(grid, shape, colors, row, column, stepNumber
         }
     });
 
-    colorArray.forEach((cell) => {
-        cell.color = colors.indexOf(cell.color) + 1 >= colors.length ? colors[0] : colors[colors.indexOf(cell.color) + 1];
+    // todo
+    // clean this up to remove the indexOf call
+    // can store the index inside the cell instead and do a check against bounds that way
+    // colorArray.forEach((cell) => {
+    //     cell.color = colors.indexOf(cell.color) + 1 >= colors.length ? colors[0] : colors[colors.indexOf(cell.color) + 1];
+    // });    
+    colorArray.forEach((cell) => {        
+        cell.colorIndex = cell.colorIndex + 1 >= colors.length ? 0 : cell.colorIndex + 1;
     });    
 
     return temp;
@@ -72,11 +78,17 @@ export function getNextShapeForGrid(grid, shape, colors, row, column, stepNumber
 export function resetGridColors(grid) {
     let newGrid = [...grid];
 
-    newGrid.forEach((row, r) => {
-        row.forEach((col, c) => {
-            newGrid[r][c].color = COLORS.default;
-        });
-    });
+    for (let row = 0; row < newGrid.length; row++) {
+        for (let col = 0; col < newGrid[row].length; col++) {
+            newGrid[row][col].colorIndex = 0;
+        }
+    }
+
+    // newGrid.forEach((row, r) => {
+    //     row.forEach((col, c) => {
+    //         newGrid[r][c].colorIndex = 0;
+    //     });
+    // });
     
     return newGrid;
 }
