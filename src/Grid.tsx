@@ -35,6 +35,7 @@ function Grid(props) {
     });  
     
     const [intervals, setIntervals] = useState([]);
+    const [clicks, setClicks] = useState([]);
     
 
     const handleMouseOver = (e) => {        
@@ -51,11 +52,39 @@ function Grid(props) {
             window.clearInterval(interval);
         });
         setIntervals([]);
+        console.log(`here are clicks`);
+        console.log(clicks);
+        runSequence(clicks);
+    }    
+
+    const runSequence = (clicks) => {
+        // for (let i = 0; i < clicks.length; i++) {
+        //     setTimeout(() => updateGrid(clicks[i].row, clicks[i].column, clicks[i].shape), 600);
+        // }        
+        let counter = 0;
+        let keepShapeSequence = true; // turn this to false to have replays replay in currently selected shape
+        const clicksInterval = setInterval(() => {
+            if (counter === clicks.length - 1) {
+                window.clearInterval(clicksInterval);
+            }
+            if (keepShapeSequence) {
+                updateGrid(clicks[counter].row, clicks[counter].column, clicks[counter].shape);
+            } else {
+                updateGrid(clicks[counter].row, clicks[counter].column, shape);
+            }
+            
+            counter++;
+        }, 500);
     }
 
     const handleClick = (e) => {
         let row = parseInt(e.currentTarget.getAttribute('data-row'), 10);        
         let column = parseInt(e.currentTarget.getAttribute('data-column'), 10);
+        setClicks(clicks => [...clicks, {row, column, shape}]);
+        updateGrid(row, column, shape);        
+    }    
+
+    const updateGrid = (row, column, shape) => {
         let stepGrid, stepNumber = 0;
         if (wave) {            
             // this part is surprisingly important
@@ -78,8 +107,7 @@ function Grid(props) {
             let newGrid = getNextShapeForGrid(grid, shape, colors, row, column, stepNumber);
             setGrid([...newGrid]);
         }
-        
-    }    
+    }
 
     return (
         <div className="outer">
