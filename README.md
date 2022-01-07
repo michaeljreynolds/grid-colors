@@ -1,3 +1,9 @@
+# Some generated Art
+
+![Pattern 1](https://github.com/michaeljreynolds/grid-colors/blob/master/src/assets/images/pattern3.png?raw=true)
+![Pattern 2](https://github.com/michaeljreynolds/grid-colors/blob/master/src/assets/images/pattern2.png?raw=true)
+![Pattern 3](https://github.com/michaeljreynolds/grid-colors/blob/master/src/assets/images/pattern3.png?raw=true)
+
 # Todo
 
 https://www.blog.duomly.com/node-js-project-ideas-for-beginners/#1-books-directory
