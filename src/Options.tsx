@@ -60,6 +60,12 @@ function Options(props) {
                 </div>  
             </div>               
             <div className="options-row">
+                <div>Sequencer Options</div>
+                <div>
+                    {/* Run in Strict Sequence <input type="checkbox" name="strictSequence" id="strict-sequence" checked={strictSequence} onChange={(e) => {handleStrictSequenceChange(e)}} /> */}
+                </div>
+            </div>       
+            <div className="options-row">
                 <input type="button" id="reset" value="Reset Grid" onClick={handleResetGridClick} />
             </div>                   
         </div>
