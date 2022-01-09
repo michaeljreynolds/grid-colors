@@ -1,6 +1,7 @@
 import { emitWarning } from 'process';
 import React, { useEffect, useState } from 'react';
-import { getNextShapeForGrid, resetGridColors } from './services/ShapeService';
+import { getNextShapeForGrid  } from './services/ShapeService';
+import { resetGridColors } from './services/GridService';
 import './Grid.css';
 
 function Grid(props) {    
@@ -23,7 +24,7 @@ function Grid(props) {
                 temp.push({
                     id,
                     //color: colors[Math.floor(Math.random() * 4)],
-                    colorIndex: 0,
+                    colorIndex: 0,                    
                     width: 25,
                     height: 25
                 })
@@ -58,10 +59,13 @@ function Grid(props) {
     }    
 
     const runSequence = (clicks) => {
+        if (clicks.length === 0) {
+            return;
+        }
         let keepShapeSequence = false;        
         let runInSequence = false; // false is cooler since it replays ur sequence in a nondeterministic order
 
-        if (runInSequence) {
+        if (!runInSequence) {
             let counter = 0;            
            const clicksInterval = setInterval(() => {
                if (counter === clicks.length - 1) {
@@ -132,7 +136,7 @@ function Grid(props) {
                                 let style = {
                                     width: cell.width,
                                     height: cell.height,
-                                    background: cell.colorIndex < colors.length ? colors[cell.colorIndex] : colors[0],
+                                    background: cell.colorIndex < colors.length ? colors[cell.colorIndex] : colors[0],                                    
                                     border: '1px solid black',                                    
                                     display: 'inline-block'
                                 }
