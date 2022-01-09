@@ -1,6 +1,17 @@
-# Todo
+# How to Use
+Click around and generate patterns. Cells cycle through colors defined as a theme. 
+Click Reset Grid to watch your creation recreate itself! Add more clicks, we track all your clicks! Watch more patterns.
 
-https://www.blog.duomly.com/node-js-project-ideas-for-beginners/#1-books-directory
+Steps define number of iterations of a shape per click
+Rate defines how fast our shape propagation timer ticks. Lower number is faster
+Wave makes a shape propagate out when checked
+
+# Some generated Art
+![Pattern 1](https://github.com/michaeljreynolds/grid-colors/blob/master/src/assets/images/pattern3.png?raw=true)
+![Pattern 2](https://github.com/michaeljreynolds/grid-colors/blob/master/src/assets/images/pattern2.png?raw=true)
+![Pattern 3](https://github.com/michaeljreynolds/grid-colors/blob/master/src/assets/images/pattern3.png?raw=true)
+
+# Todo
 
 Server stuff to do
 1) add node to project
