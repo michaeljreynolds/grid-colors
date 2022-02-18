@@ -1,5 +1,3 @@
-import { emitWarning } from 'process';
-import { useEffect, useState } from 'react';
 import './Options.css';
 import { themes } from './services/ThemeService';
 import { getShapes } from './services/ShapeService';
@@ -8,8 +6,7 @@ function Options(props) {
     
     const {     
         handlePatternClick,
-        handleRateChange,
-        handleResetGridClick,
+        handleRateChange,        
         handleShapeChange,
         handleStepChange,
         handleThemeChange,
@@ -27,7 +24,7 @@ function Options(props) {
             <div className="options-row flex">
                 <div>
                     Shapes:
-                    {getShapes().map((currentShape, index) => {                
+                    {getShapes().map((currentShape) => {                
                         return (
                             <div key={currentShape}>
                                 <input type="radio" id={currentShape} name="shape" checked={currentShape === shape} onChange={(e) => {handleShapeChange(e.target.id)}}/>

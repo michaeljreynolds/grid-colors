@@ -1,9 +1,7 @@
-import { emitWarning } from 'process';
-import React, { useEffect, useState } from 'react';
-import { getNextShapeForGrid, getShapes } from './services/ShapeService';
+import { useEffect, useState } from 'react';
+import { getNextShapeForGrid } from './services/ShapeService';
 import { resetGridColors, setupGrid } from './services/GridService';
 import './Grid.css';
-import { clearLine } from 'readline';
 
 function Grid(props) {    
 
@@ -22,7 +20,7 @@ function Grid(props) {
     const [intervals, setIntervals] = useState([]);
     const [clicks, setClicks] = useState([]);
     const [patternName, setPatternName] = useState("");
-    
+        
     useEffect(() => {        
         runSequence(currentPattern);
     }, [currentPattern]);

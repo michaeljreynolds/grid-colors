@@ -1,5 +1,3 @@
-import { getNextShapeForGrid } from './ShapeService';
-
 export function resetGridColors(grid) {
     let newGrid = [...grid];
     

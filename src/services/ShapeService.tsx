@@ -1,5 +1,3 @@
-import { COLORS } from './ColorService';
-
 export function getNextShapeForGrid(grid, shape, colors, row, column, stepNumber) {
     let temp = grid;
     let colorArray = [];
