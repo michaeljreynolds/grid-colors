@@ -1,5 +1,4 @@
-//import { useEffect, useState } from 'react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { getNextShapeForGrid } from './services/ShapeService';
 import { resetGridColors, setupGrid } from './services/GridService';
 import './Grid.css';
@@ -8,7 +7,7 @@ function Grid(props) {
 
     const {         
         colors,
-        //currentPattern,        
+        currentPattern,        
         handleSaveClickPattern,
         rate,
         shape,
@@ -22,9 +21,9 @@ function Grid(props) {
     const [clicks, setClicks] = useState([]);
     const [patternName, setPatternName] = useState("");
         
-    // useEffect(() => {        
-    //     runSequence(currentPattern);
-    // }, [currentPattern]);
+    useCallback(() => {        
+        runSequence(currentPattern);
+    }, [currentPattern]);
     
 
     const handleMouseOver = (e) => {        
