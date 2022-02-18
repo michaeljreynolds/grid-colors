@@ -12,6 +12,7 @@
 .options > .options-row {
     flex: 1 1 0;
     border: 1px solid black;    
+    padding: 10px;
 }
 
 .options > .options-row:first-child {
@@ -20,4 +21,14 @@
 
 .flex { 
     display: flex;
+}
+
+.options-flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.options-flex--row {
+    display: flex;
+    justify-content: space-between;
 }

@@ -21,6 +21,20 @@ let themes = {
         "indigo",
         "violet"
     ],
+    "rainbow-long": [
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "blue",
+        "indigo",
+        "violet",
+        "indigo",
+        "blue",
+        "green",
+        "yellow",
+        "orange"
+    ],
     "neon": [
         '#FE53BB',
         "#08F7FE",
@@ -34,7 +48,11 @@ let themes = {
         '#01fe01',
         '#fffe37',
         '#ff8600',
-        '#ed0003'
+        '#ed0003',
+        '#ff8600',
+        '#fffe37',
+        '#01fe01',
+        '#3500ff',
     ],
     "popular": [
         'rgb(34, 40, 49)',
@@ -49,7 +67,8 @@ let themes = {
         '#94B3FD',
         '#94DAFF',
         '#99FEFF'
-    ]
+    ],
+    "random": []
 };
 
 function getTheme(theme) {

@@ -50,6 +50,22 @@ export function getNextShapeForGrid(grid, shape, colors, row, column, stepNumber
         case "triangle":
             directions = [top, diagonalLeftBottom, diagonalRightBottom];         
             break;
+        case "spiral":
+            directions = stepNumber % 4 === 0 ? [top, diagonalLeftBottom, diagonalRightBottom] :
+                stepNumber % 4 === 1 ? [right, diagonalLeftBottom, diagonalLeftTop] : 
+                stepNumber % 4 === 2 ? [left, diagonalRightBottom, diagonalRightTop] : [bottom, diagonalLeftTop, diagonalRightTop];
+            break;
+        case "rotate":
+            directions = stepNumber % 2 === 0 ? [left, right, top, bottom] :
+                [diagonalLeftBottom, diagonalLeftTop, diagonalRightBottom, diagonalRightTop];
+            break;
+        case "diagonal":
+            directions = stepNumber % 2 === 0 ? [diagonalLeftBottom, diagonalRightTop] :
+                [diagonalLeftTop, diagonalRightBottom];
+            break;
+        case "full":
+            directions = getFullDirections(temp, row, column, [diagonalLeftTop, diagonalRightTop, diagonalRightBottom, diagonalLeftBottom]);
+            break;
         default:
             directions = [left, right, top, bottom];
             break;
@@ -62,12 +78,6 @@ export function getNextShapeForGrid(grid, shape, colors, row, column, stepNumber
         }
     });
 
-    // todo
-    // clean this up to remove the indexOf call
-    // can store the index inside the cell instead and do a check against bounds that way
-    // colorArray.forEach((cell) => {
-    //     cell.color = colors.indexOf(cell.color) + 1 >= colors.length ? colors[0] : colors[colors.indexOf(cell.color) + 1];
-    // });    
     colorArray.forEach((cell) => {        
         cell.colorIndex = cell.colorIndex + 1 >= colors.length ? 0 : cell.colorIndex + 1;
     });    
@@ -75,20 +85,55 @@ export function getNextShapeForGrid(grid, shape, colors, row, column, stepNumber
     return temp;
 }
 
-export function resetGridColors(grid) {
-    let newGrid = [...grid];
+export function getShapes() {
+    return ["cross", "square", "triangle", "spiral", "rotate", "diagonal", "full"];
+}
 
-    for (let row = 0; row < newGrid.length; row++) {
-        for (let col = 0; col < newGrid[row].length; col++) {
-            newGrid[row][col].colorIndex = 0;
+
+// helper functions
+
+const getFullDirections = (temp, r, c, points) => {
+    let directions = [];
+    let row, col;    
+
+    if (points[0] !== undefined) {
+        row = points[0].row;
+        for (let i = points[0].column; i <= points[1].column; i++) {
+            directions.push(temp[row][i]);        
+        }
+    }
+    
+    // for (let i = points[0].column + 1; i < points[1].column; i++) { // this pattern leaves out the diagonal which looks cool
+    //     directions.push(temp[row][i]);
+    // }
+    
+    
+    if (points[1] !== undefined && points[1].column !== undefined) {
+        col = points[1].column;
+        for (let i = points[1].row + 1; i <= points[2].row; i++) {
+            directions.push(temp[i][col]);
         }
     }
 
-    // newGrid.forEach((row, r) => {
-    //     row.forEach((col, c) => {
-    //         newGrid[r][c].colorIndex = 0;
-    //     });
-    // });
     
-    return newGrid;
-}
+    if (points[2] !== undefined && points[2].row !== undefined) {
+        row = points[2].row;
+        for (let i = points[2].column - 1; i >= points[3].column; i--) {
+            directions.push(temp[row][i]);
+        }
+    }
+    
+
+    if (points[3] !== undefined && points[3].column !== undefined) {
+        col = points[3].column;
+        for (let i = points[3].row - 1; i > points[1].row; i--) {
+            directions.push(temp[i][col]);
+        }
+    }
+
+    
+
+ 
+
+    return directions;
+};

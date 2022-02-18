@@ -47,3 +47,8 @@ This means every shape has to do its own repaint that blocks the repainting of o
 Instead I need every repaint to grab the current state of the grid in regards to all clicks that have occurred.
 Then there's a repain timer that runs every x seconds until the click queue is empty
 2a) algorithm - user clicks, send coordinates to a click queue. timer thread run every x ms. calculate next state of grid based off of merged clicks at a normalized step
+
+!!!
+NFT Ideas
+1) Traits - color backgrounds, grid size, square size, number of sequences, shapes, pattern (random, different preset clicks)
+2) metadata - gif of a subset of sequence steps. number of trades?? 
